@@ -13,6 +13,7 @@ def create_database(db_name):
     cur.close()
     conn.close()
 
+
 def create_tables(db_name):
     conn = psycopg2.connect(dbname="db_name", **config())
     with conn:
@@ -30,6 +31,7 @@ def create_tables(db_name):
                         'url VARCHAR(255)'
                         'employer int REFERENCES employers(id) NOT NULL')
     conn.close()
+
 
 def insert_data_into_tables(db_name):
     hh = HHParser()
