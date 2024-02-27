@@ -1,5 +1,5 @@
 from classes import db_manager
-from utils import create_database, create_tables, insert_data_into_tables
+from utils.utils import create_database, create_tables, insert_data_into_tables
 
 
 def user_interaction():
