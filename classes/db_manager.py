@@ -11,7 +11,7 @@ class DBManager:
 
         with conn:
             with conn.cursor() as cur:
-                cur.execute('SELECT company_name, count(vacancies_name) AS count_vacancies FROM employers JOIN vacancies using (employer_id) GROUP BY employers.company_name')
+                cur.execute('SELECT name, count(name) AS count_vacancies FROM employers JOIN vacancies using (id) GROUP BY employers.name')
                 result = cur.fetchall()
             conn.commit()
         return result
@@ -19,12 +19,11 @@ class DBManager:
     def get_all_vacancies(self):
         ''' Метод, получающий список всех вакансий. '''
 
-        cfg = config('database.ini', 'postgresql_01')
-        conn = psycopg2.connect(**cfg)
+        conn = psycopg2.connect(dbname='db_name', **config())
 
         with conn:
             with conn.cursor() as cur:
-                cur.execute('SELECT employers.company_name, vacancies.vacancies_name, vacancies.payment, vacancies_url FROM employers JOIN vacancies using (employer_id)')
+                cur.execute('SELECT employers.name, vacancies.name, vacancies.salary_from, vacancies.salary_to, vacancies.url FROM employers JOIN vacancies using (employer_id)')
                 result = cur.fetchall()
             conn.commit()
         return result
@@ -32,12 +31,11 @@ class DBManager:
     def get_avg_salary(self):
         ''' Метод, получающий среднюю зарплату по вакансиям. '''
 
-        cfg = config('database.ini', 'postgresql_01')
-        conn = psycopg2.connect(**cfg)
+        conn = psycopg2.connect(dbname='db_name', **config())
 
         with conn:
             with conn.cursor() as cur:
-                cur.execute('SELECT AVG(payment) AS payment_avg FROM vacancies')
+                cur.execute('SELECT AVG(salary_from) AS payment_avg FROM vacancies')
                 result = cur.fetchall()
             conn.commit()
         return result
@@ -45,12 +43,11 @@ class DBManager:
     def get_vacancies_with_higher_salary(self):
         ''' Метод, получающий список всех вакансий, у которых зарплата выше средней по всем вакансиям. '''
 
-        cfg = config('database.ini', 'postgresql_01')
-        conn = psycopg2.connect(**cfg)
+        conn = psycopg2.connect(dbname='db_name', **config())
 
         with conn:
             with conn.cursor() as cur:
-                cur.execute('SELECT * FROM vacancies WHERE payment > (select AVG(payment) FROM vacancies)')
+                cur.execute('SELECT * FROM vacancies WHERE salary_from > (select AVG(salary_from) FROM vacancies)')
                 result = cur.fetchall()
             conn.commit()
         return result
@@ -62,7 +59,7 @@ class DBManager:
 
         with conn:
             with conn.cursor() as cur:
-                cur.execute(f'SELECT * FROM vacancies WHERE vacancies_name LIKE \'%{keywords}%\'')
+                cur.execute(f'SELECT * FROM vacancies WHERE name LIKE \'%{keywords}%\'')
                 result = cur.fetchall()
             conn.commit()
         return result

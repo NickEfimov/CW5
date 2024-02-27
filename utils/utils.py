@@ -42,8 +42,8 @@ def insert_data_into_tables(db_name):
         with conn.cursor() as cur:
             for employer in employers:
                 cur.execute("""
-                                INSERT INTO employers VALUES (%s, %s)
-                            """, (employer['id'], employer['name']))
+                                INSERT INTO employers VALUES (%s, %s, %s)
+                            """, (employer['id'], employer['name'], employer['open_vacancies']))
             for vacancy in vacancies:
                 cur.execute("""
                                 INSERT INTO vacancies VALUES (%s, %s, %s, %s, %s, %s)
