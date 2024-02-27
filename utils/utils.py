@@ -18,18 +18,21 @@ def create_tables(db_name):
     conn = psycopg2.connect(dbname="db_name", **config())
     with conn:
         with conn.cursor() as cur:
-            cur.execute('CREATE TABLE employers'
-                        '('
-                        'id int PRIMARY KEY,'
-                        'name VARCHAR(255) UNIQUE NOT NULL;')
-            cur.execute('CREATE TABLE vacancies'
-                        '('
-                        'id int PRIMARY KEY,'
-                        'name VARCHAR(255) NOT NULL,'
-                        'salary_from int,'
-                        'salary_to int,'
-                        'url VARCHAR(255),'
-                        'employer int REFERENCES employers(id) NOT NULL')
+            cur.execute('''CREATE TABLE employers 
+                           (employer_id int PRIMARY KEY,
+                           name VARCHAR(255) UNIQUE NOT NULL,
+                           open_vacancies int
+                           );
+                           ''')
+            cur.execute('''CREATE TABLE vacancies
+                        (vacancy_id serial,
+                        name VARCHAR(255) NOT NULL,
+                        salary_from int,
+                        salary_to int,
+                        url VARCHAR(255),
+                        employer_id int REFERENCES employers(employer_id) NOT NULL
+                        );
+                        ''')
     conn.close()
 
 
@@ -37,19 +40,26 @@ def insert_data_into_tables(db_name):
     hh = HHParser()
     employers = hh.get_employers()
     vacancies = hh.filter_vacancies()
-    conn = psycopg2.connect(dbname=db_name, **config())
+    conn = psycopg2.connect(dbname='db_name', **config())
     with conn:
         with conn.cursor() as cur:
             for employer in employers:
-                cur.execute("""
-                                INSERT INTO employers VALUES (%s, %s, %s)
-                            """, (employer['id'], employer['name'], employer['open_vacancies']))
+                try:
+                    cur.execute("""
+                                INSERT INTO employers VALUES (%s, %s, %s);
+                                """, (employer['id'], employer['name'], employer['open_vacancies']))
+                except KeyError:
+                    open_vacancies = None
+
             for vacancy in vacancies:
-                cur.execute("""
-                                INSERT INTO vacancies VALUES (%s, %s, %s, %s, %s, %s)
-                            """, (vacancy['id'], vacancy['name'],
-                                  vacancy['salary_from'], vacancy['salary_from'],
-                                  vacancy['url'], vacancy['employer']))
+                try:
+                    cur.execute("""
+                                INSERT INTO vacancies VALUES (%s, %s, %s, %s, %s, %s);
+                                """, (vacancy['vacancy_id'], vacancy['name'],
+                                vacancy['salary_from'], vacancy['salary_from'],
+                                vacancy['url'], vacancy['id']))
+                except KeyError:
+                    vacancy_id = None
     conn.close()
 
 create_database("db_name")

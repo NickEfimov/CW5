@@ -4,7 +4,7 @@ from utils.utils import create_database, create_tables, insert_data_into_tables
 
 def user_interaction():
 
-    list_employers = [1740, 3776, 78638, 9988511, 9020831, 3536162, 68411, 3348208, 1626611, 1694073]
+    list_employers = [1942330, 49357, 78638, 2748, 3529, 9498112, 93787326, 2180, 1648566, 1942336]
     dbm = DBManager()
     create_database('db_name')
     create_tables('db_name')

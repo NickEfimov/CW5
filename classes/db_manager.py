@@ -11,10 +11,11 @@ class DBManager:
 
         with conn:
             with conn.cursor() as cur:
-                cur.execute('SELECT name, count(name) AS count_vacancies FROM employers JOIN vacancies using (id) GROUP BY employers.name')
+                cur.execute('SELECT name, count(name) AS count_vacancies FROM employers JOIN vacancies USING (id) GROUP BY employers.name')
                 result = cur.fetchall()
             conn.commit()
         return result
+
 
     def get_all_vacancies(self):
         ''' Метод, получающий список всех вакансий. '''
@@ -28,6 +29,7 @@ class DBManager:
             conn.commit()
         return result
 
+
     def get_avg_salary(self):
         ''' Метод, получающий среднюю зарплату по вакансиям. '''
 
@@ -40,6 +42,7 @@ class DBManager:
             conn.commit()
         return result
 
+
     def get_vacancies_with_higher_salary(self):
         ''' Метод, получающий список всех вакансий, у которых зарплата выше средней по всем вакансиям. '''
 
@@ -51,11 +54,12 @@ class DBManager:
                 result = cur.fetchall()
             conn.commit()
         return result
+
+
     def get_vacancies_with_keyword(self, keywords):
         ''' Метод, поиска всех вакансий по ключевому слову. '''
 
-        cfg = config('database.ini', 'postgresql_01')
-        conn = psycopg2.connect(**cfg)
+        conn = psycopg2.connect(dbname='db_name', **config())
 
         with conn:
             with conn.cursor() as cur:

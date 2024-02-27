@@ -38,6 +38,7 @@ class HHParser:
             vacancies.extend(self.get_vacancies_from_company(employer["id"]))
         return vacancies
 
+
     def filter_vacancies(self):
         vacancies = self.get_all_vacancies()
         filter_data = []
