@@ -1,5 +1,5 @@
 import psycopg2
-from utils import config
+from utils.config import config
 
 
 class DBManager:
@@ -7,8 +7,7 @@ class DBManager:
     def get_companies_and_vacancies_count(self):
         ''' Метод, получающий список всех компаний и вакансий у каждой компании. '''
 
-        cfg = config('database.ini', 'postgresql_01')
-        conn = psycopg2.connect(**cfg)
+        conn = psycopg2.connect(dbname='db_name', **config())
 
         with conn:
             with conn.cursor() as cur:

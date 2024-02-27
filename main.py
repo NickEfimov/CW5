@@ -1,13 +1,13 @@
-from classes import db_manager
+from classes.db_manager import DBManager
 from utils.utils import create_database, create_tables, insert_data_into_tables
 
 
 def user_interaction():
 
     list_employers = [1740, 3776, 78638, 9988511, 9020831, 3536162, 68411, 3348208, 1626611, 1694073]
-    dbm = db_manager()
-    create_database()
-    create_tables()
+    dbm = DBManager()
+    create_database('db_name')
+    create_tables('db_name')
     insert_data_into_tables(list_employers)
 
     while True:

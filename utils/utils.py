@@ -20,15 +20,15 @@ def create_tables(db_name):
         with conn.cursor() as cur:
             cur.execute('CREATE TABLE employers'
                         '('
-                        'id int PRIMARY KEY'
-                        'name VARCHAR(255) UNIQUE NOT NULL')
+                        'id int PRIMARY KEY,'
+                        'name VARCHAR(255) UNIQUE NOT NULL;')
             cur.execute('CREATE TABLE vacancies'
                         '('
-                        'id int PRIMARY KEY'
-                        'name VARCHAR(255) NOT NULL'
-                        'salary_from int'
-                        'salary_to int'
-                        'url VARCHAR(255)'
+                        'id int PRIMARY KEY,'
+                        'name VARCHAR(255) NOT NULL,'
+                        'salary_from int,'
+                        'salary_to int,'
+                        'url VARCHAR(255),'
                         'employer int REFERENCES employers(id) NOT NULL')
     conn.close()
 
@@ -52,6 +52,6 @@ def insert_data_into_tables(db_name):
                                   vacancy['url'], vacancy['employer']))
     conn.close()
 
-create_database("course_work_5")
-create_tables("course_work_5")
-insert_data_into_tables("course_work_5")
+create_database("db_name")
+create_tables("db_name")
+insert_data_into_tables("db_name")
