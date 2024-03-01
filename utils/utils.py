@@ -25,7 +25,7 @@ def create_tables(db_name):
                            );
                            ''')
             cur.execute('''CREATE TABLE vacancies
-                        (vacancy_id serial,
+                        (vacancy_id int,
                         name VARCHAR(255) NOT NULL,
                         salary_from int,
                         salary_to int,
@@ -44,22 +44,14 @@ def insert_data_into_tables(db_name):
     with conn:
         with conn.cursor() as cur:
             for employer in employers:
-                try:
-                    cur.execute("""
-                                INSERT INTO employers VALUES (%s, %s, %s);
-                                """, (employer['id'], employer['name'], employer['open_vacancies']))
-                except KeyError:
-                    open_vacancies = None
-
+                cur.execute("""
+                                INSERT INTO employers VALUES (%s, %s)
+                            """, (employer["id"], employer["name"]))
             for vacancy in vacancies:
-                try:
-                    cur.execute("""
-                                INSERT INTO vacancies VALUES (%s, %s, %s, %s, %s, %s);
-                                """, (vacancy['vacancy_id'], vacancy['name'],
-                                vacancy['salary_from'], vacancy['salary_from'],
-                                vacancy['url'], vacancy['id']))
-                except KeyError:
-                    vacancy_id = None
+                cur.execute("""INSERT INTO vacancies VALUES (%s, %s, %s, %s, %s, %s)
+                                    """, (vacancy["id"], vacancy["name"],
+                                          vacancy["salary_from"], vacancy["salary_to"],
+                                          vacancy["url"], vacancy["employer"]))
     conn.close()
 
 create_database("db_name")

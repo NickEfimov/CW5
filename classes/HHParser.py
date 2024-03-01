@@ -20,7 +20,6 @@ class HHParser:
             employers.append({"id": employer["id"], "name":employer["name"]})
         return employers
 
-
     def get_vacancies_from_company(self, id):
         params = {
             "per_page": 20,
@@ -29,7 +28,6 @@ class HHParser:
         response = requests.get("http://api.hh.ru/vacancies/", params)
         if response.status_code == 200:
             return response.json()["items"]
-
 
     def get_all_vacancies(self):
         employers = self.get_employers()
