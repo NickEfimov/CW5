@@ -11,7 +11,7 @@ class DBManager:
 
         with conn:
             with conn.cursor() as cur:
-                cur.execute('SELECT name, count(name) AS count_vacancies FROM employers JOIN vacancies USING (employer_id) GROUP BY employers.name')
+                cur.execute('SELECT employers.name, COUNT(vacancies.employer_id) AS vacancies_count FROM employers LEFT JOIN vacancies ON employers.employer_id = vacancies.employer_id GROUP BY employers.name')
                 result = cur.fetchall()
             conn.commit()
         return result
