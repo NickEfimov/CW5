@@ -1,9 +1,8 @@
 ### Example user template template
 ### Example user template
 
-/shelf/
-/workspace.xml
-venv/
-.idea/
-__pycache__/
-*.pyc
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
